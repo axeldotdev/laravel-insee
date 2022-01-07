@@ -18,4 +18,11 @@ class InseeServiceProvider extends PackageServiceProvider
             ->name('insee')
             ->hasConfigFile('insee');
     }
+
+    public function packageRegistered()
+    {
+        $this->app->bind('insee', function ($app) {
+            return new Insee();
+        });
+    }
 }
