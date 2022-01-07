@@ -17,7 +17,7 @@ class Insee
 
         $result = $this->client->post('https://api.insee.fr/token', [
             'headers' => [
-                'Content-Type'  => 'application/x-www-form-urlencoded',
+                'Content-Type' => 'application/x-www-form-urlencoded',
                 'Authorization' => 'Basic ' . $token,
             ],
             'form_params' => [

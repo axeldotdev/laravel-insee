@@ -2,9 +2,9 @@
 
 namespace Axeldotdev\Insee\Tests;
 
+use Axeldotdev\Insee\InseeServiceProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Orchestra\Testbench\TestCase as Orchestra;
-use Axeldotdev\Insee\InseeServiceProvider;
 
 class TestCase extends Orchestra
 {
