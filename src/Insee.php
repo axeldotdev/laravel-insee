@@ -54,9 +54,9 @@ class Insee
         return $this->request();
     }
 
-    public function get(array $query): stdClass
+    public function get(string $query): stdClass
     {
-        return $this->request(null, $query);
+        return $this->request($query);
     }
 
     public function find(string $code): stdClass
@@ -64,7 +64,7 @@ class Insee
         return $this->request($code);
     }
 
-    public function request(?string $code = null, array $query = []): stdClass
+    public function request(?string $code = null): stdClass
     {
         $code = $code ? '/' . str_replace(' ', '', $code) : '';
 
@@ -73,7 +73,6 @@ class Insee
                 'Authorization' => 'Bearer ' . $this->token(),
             ],
             'http_errors' => false,
-            'query' => $query,
         ]);
 
         /** @var stdClass */
