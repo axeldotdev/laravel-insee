@@ -40,7 +40,7 @@ class Insee
         return $this;
     }
 
-    public function establishements(): self
+    public function establishments(): self
     {
         $this->type = 'siret';
 
