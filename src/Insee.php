@@ -2,23 +2,26 @@
 
 namespace Axeldotdev\Insee;
 
+use GuzzleHttp\Client;
+
 class Insee
 {
     public Client $client;
+    public string $type;
 
     public function __construct()
     {
         $this->client = new Client();
     }
 
-    public function access_token()
+    public function token(): string
     {
-        $token = base64_encode(config('insee.consumer_key') . ':' . config('insee.consumer_secret'));
-
         $result = $this->client->post('https://api.insee.fr/token', [
             'headers' => [
                 'Content-Type'  => 'application/x-www-form-urlencoded',
-                'Authorization' => 'Basic ' . $token,
+                'Authorization' => 'Basic '
+                    . base64_encode(config('insee.consumer_key')
+                    . ':' . config('insee.consumer_secret')),
             ],
             'form_params' => [
                 'grant_type' => 'client_credentials',
@@ -30,28 +33,47 @@ class Insee
         return $result->access_token;
     }
 
-    public function get(string $type, ?string $code = null, array $query = [])
+    public function companies(): self
+    {
+        $this->type = 'siren';
+
+        return $this;
+    }
+
+    public function establishements(): self
+    {
+        $this->type = 'siret';
+
+        return $this;
+    }
+
+    public function all()
+    {
+        return $this->request();
+    }
+
+    public function get(array $query)
+    {
+        return $this->request(null, $query);
+    }
+
+    public function find(string $code)
+    {
+        return $this->request($code);
+    }
+
+    public function request(?string $code = null, array $query = [])
     {
         $code = $code ? '/' . str_replace(' ', '', $code) : '';
 
-        $result = $this->client->get('https://api.insee.fr/entreprises/sirene/V3/' . $type . $code, [
+        $result = $this->client->get('https://api.insee.fr/entreprises/sirene/V3/' . $this->type . $code, [
             'headers' => [
-                'Authorization' => 'Bearer ' . $this->access_token(),
+                'Authorization' => 'Bearer ' . $this->token(),
             ],
             'http_errors' => false,
             'query' => $query,
         ]);
 
         return json_decode($result->getBody());
-    }
-
-    public function siren($siren)
-    {
-        return $this->get('siren', $siren);
-    }
-
-    public function siret($siret)
-    {
-        return $this->get('siret', $siret);
     }
 }
