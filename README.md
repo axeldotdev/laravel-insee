@@ -18,7 +18,7 @@ composer require axeldotdev/laravel-insee
 You can publish the config file with:
 
 ```bash
-php artisan vendor:publish --tag="laravel-insee-config"
+php artisan vendor:publish --tag="insee-config"
 ```
 
 ## Usage
