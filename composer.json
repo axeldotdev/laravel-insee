@@ -25,7 +25,7 @@
         "chat": "https://github.com/axeldotdev/laravel-insee/discussions"
     },
     "require": {
-        "php": "^8.0",
+        "php": "^7.4|^8.0",
         "guzzlehttp/guzzle": "^7.4",
         "illuminate/contracts": "^8.73",
         "spatie/laravel-package-tools": "^1.9.2"
