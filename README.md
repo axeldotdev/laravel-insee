@@ -23,10 +23,7 @@ php artisan vendor:publish --tag="laravel-insee-config"
 
 ## Usage
 
-```php
-$insee = new Axeldotdev\Insee();
-echo $insee->echoPhrase('Hello, Axeldotdev!');
-```
+TODO
 
 ## Testing
 
