@@ -3,6 +3,7 @@
 namespace Axeldotdev\Insee;
 
 use GuzzleHttp\Client;
+use stdClass;
 
 class Insee
 {
@@ -28,6 +29,7 @@ class Insee
             ],
         ]);
 
+        /** @var stdClass */
         $result = json_decode($result->getBody());
 
         return $result->access_token;
@@ -47,22 +49,22 @@ class Insee
         return $this;
     }
 
-    public function all()
+    public function all(): stdClass
     {
         return $this->request();
     }
 
-    public function get(array $query)
+    public function get(array $query): stdClass
     {
         return $this->request(null, $query);
     }
 
-    public function find(string $code)
+    public function find(string $code): stdClass
     {
         return $this->request($code);
     }
 
-    public function request(?string $code = null, array $query = [])
+    public function request(?string $code = null, array $query = []): stdClass
     {
         $code = $code ? '/' . str_replace(' ', '', $code) : '';
 
@@ -74,6 +76,7 @@ class Insee
             'query' => $query,
         ]);
 
+        /** @var stdClass */
         return json_decode($result->getBody());
     }
 }
