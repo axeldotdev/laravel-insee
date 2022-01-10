@@ -3,12 +3,10 @@
 namespace Axeldotdev\Insee;
 
 use GuzzleHttp\Client;
-use stdClass;
 
 class Insee
 {
     public Client $client;
-    public string $type;
 
     public function __construct()
     {
@@ -35,47 +33,13 @@ class Insee
         return $result->access_token;
     }
 
-    public function companies(): self
+    public function sirene()
     {
-        $this->type = 'siren';
-
-        return $this;
+        return new Sirene($this->client, $this->token());
     }
 
-    public function establishments(): self
+    public function metadata()
     {
-        $this->type = 'siret';
-
-        return $this;
-    }
-
-    public function all(): stdClass
-    {
-        return $this->request();
-    }
-
-    public function get(string $query): stdClass
-    {
-        return $this->request($query);
-    }
-
-    public function find(string $code): stdClass
-    {
-        return $this->request($code);
-    }
-
-    public function request(?string $code = null): stdClass
-    {
-        $code = $code ? '/' . str_replace(' ', '', $code) : '';
-
-        $result = $this->client->get('https://api.insee.fr/entreprises/sirene/V3/' . $this->type . $code, [
-            'headers' => [
-                'Authorization' => 'Bearer ' . $this->token(),
-            ],
-            'http_errors' => false,
-        ]);
-
-        /** @var stdClass */
-        return json_decode($result->getBody());
+        return new Metadata($this->client, $this->token());
     }
 }
